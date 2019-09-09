@@ -171,8 +171,8 @@ function mySendConfirmed(myRAddress){
                global.myLatestAddress = response[myStateLoop].address
                //  console.log('global.myLatestAddress')
                //  console.log(global.myLatestAddress)
-
-               myGenNewAddressOnly(mySeed)   // need to generate a new seed for the web page
+                ////////////////////// not sure if we should do this twice
+              // myGenNewAddressOnly(mySeed)   // need to generate a new address for the web page
             }
 
 ///////////////////////////////////////      end only after startup       ////////////////////////////////////////////////////////////////
@@ -274,7 +274,56 @@ function callback(error, response, body) {
         console.log('myAmount');
         console.log(myAmount);
 
+   ////////////////////////////////////// issue Has the recieve address been generated??????    ///////////////////////////
+	    
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	    
+	    
+	var options = {
+                checksum: true,
+		security: 2
+	}
 
+iota
+  .getNewAddress(myPassedSeed, options)
+  .then(myGenAddress => {
+      global.myReceiveAddress = myGenAddress   // need a refresh from browser side to see this?
+      console.log('Generating new receive address')
+      console.log('global.myReceiveAddress')
+      console.log(global.myReceiveAddress)
+	///////////////////////// so do the send of information inside here ///////////////////
+	 let myMessageToSendMain  = global.myReceiveAddress
+         mySendMessage(mySendToAddressMain, myMessageToSendMain)    // send a 0 value message as a rely
+	
+  })
+  .catch(err => {
+    console.log(err)
+  })
+
+    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	//  let myMessageToSendMain  = global.myReceiveAddress   // for this we always need to send the new receive address back to the client  
+	    
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  /*  
+	    
          let myMessageToSendMain = 'From Rocksetta: The Photoresistor reads: '+ myAmount
 
         if ( myParticleArg == 'toggleLED'){
@@ -284,11 +333,16 @@ function callback(error, response, body) {
                 myMessageToSendMain = 'From Rocksetta: You toggled the D7 LED ON '
             }
         }
+	    
+	  */  
+	    
+	    
+	    
            // console.log('myMessageToSendMain')
            // console.log(myMessageToSendMain)
 
           //const myDone = mySendMessage(mySendToAddressMain, myMessageToSendMain)
-           mySendMessage(mySendToAddressMain, myMessageToSendMain)                          // send a 0 value message as a rely
+        //   mySendMessage(mySendToAddressMain, myMessageToSendMain)                          // send a 0 value message as a rely
 
 
     }
