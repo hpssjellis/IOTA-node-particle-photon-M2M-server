@@ -5,16 +5,17 @@ Hackster competition for which I will make a template for machine 2 machine auto
 
 Started September 9th, 2019
 
-2 Github sites one the main server machine at
+2 Github sites one the main server machine at (this github)
 
 https://github.com/hpssjellis/IOTA-node-particle-photon-M2M-server
 
-load gitpod by 
+load gitpod of the server by 
 
 https://gitpod.io/#github.com/hpssjellis/IOTA-node-particle-photon-M2M-server
 
 
-and the other the client machine at 
+
+and the other the client machine is at 
 
 https://github.com/hpssjellis/IOTA-node-particle-photon-M2M-client
 
