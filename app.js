@@ -13,8 +13,6 @@ const myParticleId = '888888888888888888888888'
 const myParticleAccessToken = 'abc88d8888888ef8888ghi8888j88k88l888mnop'
 
 
-
-
 global.myRecieveIndex = 0    // defines when to start showing the replies! Careful will not show results if above latest recive address
 
 
@@ -169,8 +167,8 @@ function mySendConfirmed(myRAddress){
 
             if (global.myNotStartup){
                global.myLatestAddress = response[myStateLoop].address
-               //  console.log('global.myLatestAddress')
-               //  console.log(global.myLatestAddress)
+                 console.log('global.myLatestAddress')
+                 console.log(global.myLatestAddress)
 
                myGenNewAddressOnly(mySeed)   // need to generate a new seed for the web page
             }
@@ -274,7 +272,47 @@ function callback(error, response, body) {
         console.log('myAmount');
         console.log(myAmount);
 
+
+
+
+
+
+
+
+	var options3 = {
+        checksum: true,
+		security: 2
+	}
+
+iota
+  .getNewAddress(mySeed, options3)
+  .then(myGenAddress => {
+      global.myReceiveAddress = myGenAddress   // need a refresh from browser side to see this?
+      console.log('Generating new receive address inside function')
+      console.log('global.myReceiveAddress')
+      console.log(global.myReceiveAddress)
+
         let myMessageToSendMain = global.myReceiveAddress
+
+           mySendMessage(mySendToAddressMain, myMessageToSendMain)
+
+
+  })
+  .catch(err => {
+    console.log(err)
+  })
+
+
+
+
+
+
+
+
+
+
+
+      //  let myMessageToSendMain = global.myReceiveAddress
 
 /* from old program
 
@@ -297,7 +335,7 @@ function callback(error, response, body) {
 
 
 
-           mySendMessage(mySendToAddressMain, myMessageToSendMain)                          // send a 0 value message as a reply
+       //    mySendMessage(mySendToAddressMain, myMessageToSendMain)                          // send a 0 value message as a reply
 
 
     }
@@ -484,7 +522,7 @@ app.get('/', function(req, res) {
 
 
      let myInt =  setInterval( function() {
-       console.log('Hello every 5 minutes = 300,000 seconds')
+       console.log('Hello every 2 minutes = 120,000 seconds')
        global.myNotStartup = true      // so some special things can happen, check this incoming and generate new seed
        let myIncoming = global.myReceiveAddress
        if (myIncoming.length == 90){
@@ -501,7 +539,7 @@ app.get('/', function(req, res) {
 
           console.log('Done checking')
 
-     }, 300000 );
+     }, 120000 );
 
 
 // Listen
