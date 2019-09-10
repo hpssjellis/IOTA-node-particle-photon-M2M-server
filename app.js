@@ -171,8 +171,8 @@ function mySendConfirmed(myRAddress){
                global.myLatestAddress = response[myStateLoop].address
                //  console.log('global.myLatestAddress')
                //  console.log(global.myLatestAddress)
-                ////////////////////// not sure if we should do this twice
-              // myGenNewAddressOnly(mySeed)   // need to generate a new address for the web page
+
+               myGenNewAddressOnly(mySeed)   // need to generate a new seed for the web page
             }
 
 ///////////////////////////////////////      end only after startup       ////////////////////////////////////////////////////////////////
@@ -274,56 +274,11 @@ function callback(error, response, body) {
         console.log('myAmount');
         console.log(myAmount);
 
-   ////////////////////////////////////// issue Has the recieve address been generated??????    ///////////////////////////
-	    
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	    
-	    
-	var options = {
-                checksum: true,
-		security: 2
-	}
+        let myMessageToSendMain = global.myReceiveAddress
 
-iota
-  .getNewAddress(myPassedSeed, options)
-  .then(myGenAddress => {
-      global.myReceiveAddress = myGenAddress   // need a refresh from browser side to see this?
-      console.log('Generating new receive address')
-      console.log('global.myReceiveAddress')
-      console.log(global.myReceiveAddress)
-	///////////////////////// so do the send of information inside here ///////////////////
-	 let myMessageToSendMain  = global.myReceiveAddress
-         mySendMessage(mySendToAddressMain, myMessageToSendMain)    // send a 0 value message as a rely
-	
-  })
-  .catch(err => {
-    console.log(err)
-  })
+/* from old program
 
-    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	//  let myMessageToSendMain  = global.myReceiveAddress   // for this we always need to send the new receive address back to the client  
-	    
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  /*  
-	    
+
          let myMessageToSendMain = 'From Rocksetta: The Photoresistor reads: '+ myAmount
 
         if ( myParticleArg == 'toggleLED'){
@@ -333,16 +288,16 @@ iota
                 myMessageToSendMain = 'From Rocksetta: You toggled the D7 LED ON '
             }
         }
-	    
-	  */  
-	    
-	    
-	    
            // console.log('myMessageToSendMain')
            // console.log(myMessageToSendMain)
 
           //const myDone = mySendMessage(mySendToAddressMain, myMessageToSendMain)
-        //   mySendMessage(mySendToAddressMain, myMessageToSendMain)                          // send a 0 value message as a rely
+
+*/
+
+
+
+           mySendMessage(mySendToAddressMain, myMessageToSendMain)                          // send a 0 value message as a reply
 
 
     }
@@ -513,6 +468,31 @@ app.get('/', function(req, res) {
         //  console.log('Already checked that confirmed address')
        }
      }
+
+
+     let myInt =  setInterval( function() {
+       console.log('Hello every 5 minutes = 300,000 seconds')
+       global.myNotStartup = true      // so some special things can happen, check this incoming and generate new seed
+       let myIncoming = global.myReceiveAddress
+       if (myIncoming.length == 90){
+          // console.log(myIncoming)
+           myIncoming = myIncoming.substring(0, 81)
+          // console.log(myIncoming)
+       }
+       //.substring(0, myBig.length - 1);
+       if (global.myLatestAddress != myIncoming){
+        mySendConfirmed(myIncoming)
+       } else {
+          console.log('Already checked that confirmed address')
+       }
+
+          console.log('Done checking')
+
+     }, 300000 );
+
+
+
+
 
 
 
