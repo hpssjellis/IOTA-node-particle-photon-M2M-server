@@ -3,7 +3,7 @@
 
 int myReturn = 0;
 int myInt = 0; 
-int myDescending = 0;
+int myDescending = 100;
 
 void setup() {
     pinMode(D7, OUTPUT);
@@ -25,7 +25,7 @@ void loop() {
 
 int doAllFunction(String myCommand) {
    
-    myInt += myCommand.toInt();    // add the new value to the old value
+    myInt = myCommand.toInt();    // add the new value to the old value
     
     if  (myCommand == "toggleLED"){
         digitalWrite(D7, !digitalRead(D7));
@@ -41,9 +41,11 @@ int doAllFunction(String myCommand) {
         
     } else if (myInt > 0 ){  // myInt can be a number between 1 and 256
     
-        Particle.publish("Sent an integer ", String(myInt), 60, PRIVATE);  
-        if (myInt > 256){myInt = 256;}
-        myDescending = myInt-1;  // so 0 to 255
+        myDescending += myInt-1;  // so 0 to 255
+        
+ 
+        if (myDescending > 255){myDescending = 255;}
+        Particle.publish("Added: "+String(myInt), "Total: "+String(myDescending), 60, PRIVATE); 
         myReturn = myDescending;   
         
         
