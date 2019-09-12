@@ -25,7 +25,7 @@ void loop() {
 
 int doAllFunction(String myCommand) {
    
-    myInt = myCommand.toInt();  
+    myInt += myCommand.toInt();    // add the new value to the old value
     
     if  (myCommand == "toggleLED"){
         digitalWrite(D7, !digitalRead(D7));
@@ -34,10 +34,15 @@ int doAllFunction(String myCommand) {
 
 
     } else if (myCommand == "photoResistor"){
+        
+        Particle.publish("myCommand variable is: ", myCommand, 60, PRIVATE);  
         myReturn = analogRead(A0);   
         
         
     } else if (myInt > 0 ){  // myInt can be a number between 1 and 256
+    
+        Particle.publish("Sent an integer ", String(myInt), 60, PRIVATE);  
+        if (myInt > 256){myInt = 256;}
         myDescending = myInt-1;  // so 0 to 255
         myReturn = myDescending;   
         
@@ -45,4 +50,5 @@ int doAllFunction(String myCommand) {
     } else {
         myReturn = -1;   // showing an incorrect argument
     }
-    return myReturn;                
+    return myReturn;                                
+}
