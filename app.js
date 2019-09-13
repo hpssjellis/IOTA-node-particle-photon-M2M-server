@@ -13,6 +13,8 @@ const myParticleId = '888888888888888888888888'
 const myParticleAccessToken = 'abc88d8888888ef8888ghi8888j88k88l888mnop'
 
 
+
+
 global.myRecieveIndex = 0    // defines when to start showing the replies! Careful will not show results if above latest recive address
 
 
@@ -167,8 +169,8 @@ function mySendConfirmed(myRAddress){
 
             if (global.myNotStartup){
                global.myLatestAddress = response[myStateLoop].address
-                 console.log('global.myLatestAddress')
-                 console.log(global.myLatestAddress)
+               //  console.log('global.myLatestAddress')
+               //  console.log(global.myLatestAddress)
 
                myGenNewAddressOnly(mySeed)   // need to generate a new seed for the web page
             }
@@ -222,10 +224,11 @@ function mySendConfirmed(myRAddress){
        // console.log(myMessage)
                                                                                                                   // sensor response
        if (response[myStateLoop].value == 0  ){                          myTempResponse += '<td>You gotta pay to read a sensor!</td>'  }
-       if (response[myStateLoop].value >= 1  && response[myStateLoop].value <= 10  ){          myParticleSend('doAll', 'toggleLED', myMessage);          myTempResponse += '<td>Toggles the D7 LED</td>'  }
-         if (response[myStateLoop].value >  10 ){                                              myParticleSend('doAll', 'photoResistor', myMessage);      myTempResponse += '<td>photoresistor reading sent</td>'  }
+       // if (response[myStateLoop].value >= 1  && response[myStateLoop].value <= 10  ){          myParticleSend('doAll', 'toggleLED', myMessage);          myTempResponse += '<td>Toggles the D7 LED</td>'  }
+       // if (response[myStateLoop].value >  10 ){                                              myParticleSend('doAll', 'photoResistor', myMessage);      myTempResponse += '<td>photoresistor reading sent</td>'  }
+       if (response[myStateLoop].value >  1 ){                                              myParticleSend('doAll', response[myStateLoop].value , myMessage);      myTempResponse += '<td>photoresistor reading sent</td>'  }
 
-//doAll
+
        myTempResponse += '<td>'+response[myStateLoop].address.substring(0, 5)+'...</td>'
        myTempResponse += '<td>'+myMessage.substring(0, 5)+'...</td>'
        myTempResponse += '</tr>'
@@ -273,50 +276,6 @@ function callback(error, response, body) {
         console.log(myAmount);
 
 
-
-
-
-
-
-
-	var options3 = {
-        checksum: true,
-		security: 2
-	}
-
-iota
-  .getNewAddress(mySeed, options3)
-  .then(myGenAddress => {
-      global.myReceiveAddress = myGenAddress   // need a refresh from browser side to see this?
-      console.log('Generating new receive address inside function')
-      console.log('global.myReceiveAddress')
-      console.log(global.myReceiveAddress)
-
-        let myMessageToSendMain = global.myReceiveAddress
-
-           mySendMessage(mySendToAddressMain, myMessageToSendMain)
-
-
-  })
-  .catch(err => {
-    console.log(err)
-  })
-
-
-
-
-
-
-
-
-
-
-
-      //  let myMessageToSendMain = global.myReceiveAddress
-
-/* from old program
-
-
          let myMessageToSendMain = 'From Rocksetta: The Photoresistor reads: '+ myAmount
 
         if ( myParticleArg == 'toggleLED'){
@@ -330,12 +289,7 @@ iota
            // console.log(myMessageToSendMain)
 
           //const myDone = mySendMessage(mySendToAddressMain, myMessageToSendMain)
-
-*/
-
-
-
-       //    mySendMessage(mySendToAddressMain, myMessageToSendMain)                          // send a 0 value message as a reply
+           mySendMessage(mySendToAddressMain, myMessageToSendMain)                          // send a 0 value message as a rely
 
 
     }
@@ -441,7 +395,11 @@ app.get('/', function(req, res) {
 
 <form action="/" method="get">
     <input type="hidden" name="myDo" value="third">
-    <input type=text name="myReceiveAddressToCheck" value="`+global.myReceiveAddress+`" size = "130" ><br>
+
+    <input type=text name="myReceiveAddressToCheck" value="`+global.myReceiveAddress+`" size = "130" >
+    <textarea name="myReceiveAddressToCheck" rows=10 cols=130 NOWRAP>
+     `+global.myReceiveAddress+`
+    </textarea><br>
     <input type="submit" value="Submit"><input type="reset" value="Reset">
 </form>
 
@@ -462,14 +420,7 @@ app.get('/', function(req, res) {
 <li> Above 10 IOTA sendsPhotoresistor reading
 
 
-<!--
-<li>FOLLOWING NOT YET CONNECTED !!!!!!!!!!!!!!
-<li> 11 up to 100 IOTA Temperature Reading
-<li> 1001 up to 10,000 IOTA Rangefinder reading
-<li> 10,001 up to 100,000 IOTA Accelerometer xyz reading
-<li> 100,001 up to 1,000,000 IOTA GPS reading
-<li> Greater than 1,000,000 IOTA all sensor readings
--->
+
 
 
 
@@ -509,37 +460,8 @@ app.get('/', function(req, res) {
 
 
 
-
-
-
-
-
-
 });   // end app.get
 
-
-
-
-
-     let myInt =  setInterval( function() {
-       console.log('Hello every 2 minutes = 120,000 seconds')
-       global.myNotStartup = true      // so some special things can happen, check this incoming and generate new seed
-       let myIncoming = global.myReceiveAddress
-       if (myIncoming.length == 90){
-          // console.log(myIncoming)
-           myIncoming = myIncoming.substring(0, 81)
-          // console.log(myIncoming)
-       }
-       //.substring(0, myBig.length - 1);
-       if (global.myLatestAddress != myIncoming){
-        mySendConfirmed(myIncoming)
-       } else {
-          console.log('Already checked that confirmed address')
-       }
-
-          console.log('Done checking')
-
-     }, 120000 );
 
 
 // Listen
