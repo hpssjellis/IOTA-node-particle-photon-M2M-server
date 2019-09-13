@@ -43,7 +43,7 @@ int doAllFunction(String myCommand) {
     
         myDescending += myInt-1;  // so 0 to 255
         
- 
+         digitalWrite(D7, !digitalRead(D7));   // might as well toggle the D7 LED
         if (myDescending > 255){myDescending = 255;}
         Particle.publish("Added: "+String(myInt), "Total: "+String(myDescending), 60, PRIVATE); 
         myReturn = myDescending;   
